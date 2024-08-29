@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" v-show="todos.length">
     <div class="text">
         <input type="checkbox" v-model='add'>
         <span>已完成{{done}}/全部{{todos.length}}</span>
@@ -12,7 +12,7 @@
 import pubsub from 'pubsub-js'
 export default {
     name:'Footer',
-    props:['todos',],
+    props:['todos'],
     data() {
         return {
             display:''

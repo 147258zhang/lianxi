@@ -106,6 +106,7 @@ export default {
   .app{
     width: 600px;
     height: 400px;
+    margin: 0 auto;
     border: 1px solid #C0C0C0;
     border-radius: 5px;
     .content{
