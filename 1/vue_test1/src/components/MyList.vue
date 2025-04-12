@@ -1,5 +1,5 @@
 <template>
-  <div :class="todos.length?'list':'list_reverse'">
+  <div class="list">
     <transition-group
     name="animate__animated animate__bounce" 
     enter-active-class="animate__backInRight"
@@ -27,14 +27,6 @@ export default {
   .list{
     width: 550px;
     margin: 30px 0;
-    border: 1px solid #C0C0C0;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  .list_reverse{
-    width: 550px;
-    margin: 30px 0;
-    border: none;
     border-radius: 5px;
     box-sizing: border-box;
   }
