@@ -49,13 +49,11 @@ export default {
     .item{
         height: 40px;
         line-height: 40px;
-        border: 1px solid #C0C0C0;
+        border-bottom: 1px solid #C0C0C0;
         display: flex;
         justify-content: space-between;
         align-items: center;
         .text{
-            display: flex;
-            align-items: center;
             span{
                 display: inline-block;
                 margin: 0 0 0 10px;
@@ -88,6 +86,9 @@ export default {
                 background: #ff6700;
                 border-radius: 3px;
             }
+        }
+        &:last-child{
+            border: none;
         }
     }
 </style>
