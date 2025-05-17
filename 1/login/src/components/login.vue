@@ -1,66 +1,76 @@
 <template>
   <div class="login">
     <h1>欢迎-登录</h1>
-    <div class="success" ref="ulogin">{{ message }}</div>
-    <div class="account">
+    <div class="msg" :class="userClass" ref="ulogin">{{ message }}</div>
+    <form  ref="myForm" >
+      <div class="account">
       <span>账号名</span>
-      <input type="text" v-model="username" />
+      <input type="text" name="username"/>
     </div>
     <div class="password">
       <span>密码</span>
-      <input type="password" v-model="password" />
+      <input type="password" name="password"/>
     </div>
-    <button @click="login">登录</button>
+    <button @click="login" type="button">登录</button>
+    </form>
+    
+    
   </div>
 </template>
 
 <script>
+import serialize from 'form-serialize'
 import axios from "axios";
 export default {
   name: "login",
   data() {
     return {
-      username: "zhangsanfeng",
-      password: "123456",
       message: "",
-      passStr: "",
+      userClass:'error'
     };
   },
   methods: {
-    conceal(data) {
+    concealE(data) {
       this.message = data;
       this.$refs.ulogin.style.visibility='visible'
-      this.$refs.ulogin.classList.add("error");
+      this.userClass='error'
+      setTimeout(() => {
+        this.$refs.ulogin.style.visibility = "hidden";
+      }, 3000);
+    },
+    concealS(data){
+      this.message = data;
+      this.$refs.ulogin.style.visibility='visible'
+      this.userClass='success'
       setTimeout(() => {
         this.$refs.ulogin.style.visibility = "hidden";
       }, 3000);
     },
     login() {
-      if (this.username.length < 8) {
+      const data=serialize(this.$refs.myForm,{hash:true,empty:true})
+      console.log(data)
+      const {username='zhangsanfeng',password=123456}=data
+      console.log(data)
+      if (username.length < 8) {
         
-        this.conceal("用户名需大于等于8位")
+        this.concealE('用户名需大于等于8位')
         
       } else {
-        if (this.password.length < 6) {
-          this.conceal("密码需大于等于6位");
+        if (password.length < 6) {
+          this.concealE('密码需大于等于6位');
           console.log(2)
         } else {
           axios
-            .post("https://hmajax.itheima.net/api/login", {
-              username: this.username,
-              password: this.password,
-            })
+            .post("https://hmajax.itheima.net/api/login", 
+              data
+            )
             .then((res) => {
               console.log(res);
-              this.message = res.data.message;
-              this.$refs.ulogin.style.visibility = "visible";
-              setTimeout(() => {
-                this.$refs.ulogin.style.visibility = "hidden";
-              }, 3000);
+              this.concealS(res.data.message)
             })
             .catch((err) => {
             
-              this.conceal('用户名或密码错误')
+              this.concealE('用户名或密码错误')
             });
         }
       }
@@ -77,19 +87,21 @@ export default {
   .account {
     margin: 50px 0 30px;
   }
-  .success {
+  .msg {
     width: 450px;
     height: 50px;
     line-height: 50px;
     font-size: 17px;
     padding: 0 10px;
     visibility: hidden;
-    background-color: #00ff80;
-    color: #008040;
     border-radius: 4px;
   }
-  .error {
+  .success{
     visibility: visible;
+    background-color: #00ff80;
+    color: #008040;
+  }
+  .error {
     background-color: #ff8040;
     color: #804000;
   }
